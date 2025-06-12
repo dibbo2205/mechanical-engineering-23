@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mechanical Engineering 23 - MIST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* তোমার দেওয়া CSS এখানে থাকবে */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+      min-height: 100vh;
+      padding: 30px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    header {
+      position: relative;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .logo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 70px;
+      margin: 10px 20px;
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+    }
+    .main-heading-image {
+      max-width: 90%;
+      height: auto;
+      margin-top: 40px;
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.7));
+    }
+    .search-box {
+      margin: 0 auto 30px;
+      max-width: 500px;
+      width: 100%;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 50px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1.1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    .search-box input::placeholder {
+      color: #ddd;
+    }
+    .total-count {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 25px;
+    }
+    .students {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .student {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      font-weight: 500;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .student:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.4);
+      border-color: #fff;
+    }
+    @media (max-width: 500px) {
+      .main-heading-image {
+        max-width: 100%;
+      }
+      .logo {
+        height: 50px;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <img src="Mechanical.png" alt="Mechanical Engineering 23" class="main-heading-image" />
+        <img src="Engineering.png" alt="Mechanical Engineering 23" class="main-heading-image" />
+      </div>
+      <img src="MIST_Logo.png" alt="MIST Logo" class="logo" />
+    </header>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for a name..."
+        onkeyup="searchNames()"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="total-count">
+      Total Students: <span id="studentCount"></span>
+    </div>
+
+    <div class="students" id="studentsList"></div>
+  </div>
+
+  <script>
+    const names = [
+     "A T M Rawnak", "Aadrito Maitra", "Abdullah Yousuf", "Adiba Yeamin Tanisha",
+  "Ahmad Basit", "Ahnaf Anonno", "AK Nahiduzzaman Ahmmed Nahid", "Akm Shadman Shakib",
+  "Alif Hossain", "Alvee Zaman", "Amartya Barua", "Ankita Saha",
+  "Aquib Al Razi", "Arnob Arafat", "Arshad Navid", "Asif Al Hasan",
+   "Asiful Hoque", "Asik Mahmud", "Asir Asir",
+  "Ashfia Oshin",                      
+  "Azfar Iqtidar", "Azmayeen Adil", "Dhrubo Jyoti Raha", "Dibbo Biswas",
+  "Esmam Ahamed", "Fah Mid", "Fahmid Hossain", "Farjana Hassan Tamanna",
+  "Ferdaus Al Akhero Baishakh", "Hasnatul Islam", "Hassan Tahmid Tazwar",
+  "Iftakhar Zaman Saidur", "Imteaj Hossain", "Ishrak Hasin", "Ishrat Jahan Fariha",
+  "Ja Fir", "Jannatul Maowa", "Jonayed Arfin", "Junaid Jmshed",
+  "Junaim Nasif", "Karobi Hakim", "Khan Siyem", "Kibria Sarker",
+  "Labeed Lohani Khan", "Lamha Ferdous", "Lazim Rash-Ha", "Mahir Mujahid",
+  "Mahjabin Mayesha", "Mantasha Murshid", "Masudur Rahman", "MD Mostafizur Rashid Utsho",
+  "MD Rafiur Rahman", "Md Saydur Rahman", "MD Sayem", "MD Touhid Ahmed Brinto",
+  "Md. Ibtehazul Haque", "Md. Jubayer Islam", "Md. Minhajur Rahman Riaj", "Md. Riaj Al Faruk",
+  "Md. Sabbir", "Md. Sabbir Ahmed", "Mehedi Hasan", "MI Kabyo",
+  "Miftahul Islam", "Miftahul Zannah", "Mike Snow", "Minhazul Arefin",
+  "Monayem Hossain", "Morshed Abid", "Mubtasim Zaman", "Muhammad Abiaz",
+  "Muhammad Tahmid", "Nafiza Nusrat Kakoli", "Nahal Taj", "Nakibul Haque Siam",
+  "Rafiul Islam", "Raihan Ridvi Efadh", "Raiyan Reza", "Ratul Islam",
+  "Reazul Islam Fahim", "Rehanul Islam Antu", "Riju Ahammed Sami", "RJ Anondo",
+  "Rushad Anan", "Sadia Sultana", "Sadia Tasnim", "Safayet Ahmed Sakib",
+  "Arman",                      
+  "Sayontan Debnath Avro", "Sha Fim", "Shahriar Ahmed Naim",
+  "Shahriar Kabir Sanvi", "Shahriar Mahim", "Shahriar Samin", "Shaila Sanjida Moni",
+  "Shakib Siam",                        
+  "Shihab Uddin", "Shihab Zawad", "Shohaib Afnan", "Tabeeb Haq",
+  "Tahsin Sarker", "Tarek Bin Kamal", "Tasnim Hasan Suvro", "Tauhidul Haque Joarder",
+  "Touhidur Rahman Talha", "Wasif Tahmid", "Yasin Khan Raiyan", "Zahinur Rahman",
+  "Zareer Ana Ramijah", "Zarin Tasnim"
+      
+    ];
+
+    function openProfile(name) {
+      window.location.href = `form.html?name=${encodeURIComponent(name)}`;
+    }
+
+    function renderNames(filteredNames = names) {
+      const container = document.getElementById("studentsList");
+      container.innerHTML = filteredNames
+        .map(name => `<div class="student" onclick="openProfile('${name}')">${name}</div>`)
+        .join("");
+      document.getElementById("studentCount").textContent = filteredNames.length;
+    }
+
+    function searchNames() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = names.filter(name => name.toLowerCase().includes(query));
+      renderNames(filtered);
+    }
+
+    renderNames();
+  </script>
+</body>
+</html>
